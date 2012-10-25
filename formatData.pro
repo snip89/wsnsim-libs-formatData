@@ -1,3 +1,5 @@
+include(../libs.pri)
+
 TEMPLATE = lib
 
 QT       -= gui

@@ -15,7 +15,7 @@ class FormatData : public QObject
 public:
     FormatData();
 
-    Format load(QString formatFileName, QString* errorMessage);
+    Format* load(QString formatFileName, QString* errorMessage);
     ArgumentsInfo loadArguments(QDomNode dn_node);
     FieldsInfo loadFields(QDomNode dn_node);
 };
@@ -26,6 +26,6 @@ public:
 #define MY_EXPORT
 #endif
 
-extern "C" MY_EXPORT Format load(QString projectFileName, QString* errorMessage);
+extern "C" MY_EXPORT Format* load(QString projectFileName, QString* errorMessage);
 
 #endif // FORMATDATA_H

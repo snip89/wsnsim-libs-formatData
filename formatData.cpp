@@ -7,9 +7,9 @@ FormatData::FormatData() :
     QTextCodec::setCodecForCStrings(QTextCodec::codecForName("utf-8"));
 }
 
-Format FormatData::load(QString formatFileName, QString *errorMessage)
+Format* FormatData::load(QString formatFileName, QString *errorMessage)
 {
-    Format format;
+    Format* format = new Format();
 
     QFile file(formatFileName);
 
@@ -41,17 +41,17 @@ Format FormatData::load(QString formatFileName, QString *errorMessage)
 
     QDomNamedNodeMap root_attributes = de_root.attributes();
     QDomAttr root_attr = root_attributes.item(0).toAttr();
-    format.type = root_attr.value();
+    format->type = root_attr.value();
 
     QDomNode dn_node = de_root.firstChild();
 
     while (!dn_node.isNull())
     {
         if(dn_node.nodeName() == "arguments")
-            format.argumentsInfo = loadArguments(dn_node);
+            format->argumentsInfo = loadArguments(dn_node);
 
         if(dn_node.nodeName() == "fields")
-            format.fieldsInfo = loadFields(dn_node);
+            format->fieldsInfo = loadFields(dn_node);
 
         dn_node = dn_node.nextSibling();
     }
@@ -113,7 +113,7 @@ FieldsInfo FormatData::loadFields(QDomNode dn_node)
     return fieldsInfo;
 }
 
-extern "C" MY_EXPORT Format load(QString projectFileName, QString* errorMessage)
+extern "C" MY_EXPORT Format* load(QString projectFileName, QString* errorMessage)
 {
     FormatData formatData;
     return formatData.load(projectFileName, errorMessage);

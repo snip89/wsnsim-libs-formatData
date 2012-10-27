@@ -47,23 +47,70 @@ Format FormatData::load(QString formatFileName, QString *errorMessage)
 
     while (!dn_node.isNull())
     {
-        FieldInfo info;
+        if(dn_node.nodeName() == "arguments")
+            format.argumentsInfo = loadArguments(dn_node);
 
-        QDomNamedNodeMap attributes = dn_node.attributes();
-        for (uint index = 0; index < attributes.length(); index++) {
-            QDomAttr attr = attributes.item(index).toAttr();
-            if (attr.name() == "name")
-                info.insert(attr.name(), attr.value());
-            if (attr.name() == "length")
-                info.insert(attr.name(), attr.value());
-        }
-
-        format.fieldsInfo.append(info);
+        if(dn_node.nodeName() == "fields")
+            format.fieldsInfo = loadFields(dn_node);
 
         dn_node = dn_node.nextSibling();
     }
 
     return format;
+}
+
+ArgumentsInfo FormatData::loadArguments(QDomNode dn_node)
+{
+    QDomNode dn_nextNode = dn_node.firstChild();
+
+    ArgumentsInfo argumentsInfo;
+
+    while (!dn_nextNode.isNull())
+    {
+        ArgumentInfo argumentInfo;
+
+        QDomNamedNodeMap attributes = dn_nextNode.attributes();
+        for (uint index = 0; index < attributes.length(); index++) {
+            QDomAttr attr = attributes.item(index).toAttr();
+            if (attr.name() == "event")
+                argumentInfo.insert(attr.name(), attr.value());
+            if (attr.name() == "ID")
+                argumentInfo.insert(attr.name(), attr.value());
+        }
+
+        argumentsInfo.append(argumentInfo);
+
+        dn_nextNode = dn_nextNode.nextSibling();
+    }
+
+    return argumentsInfo;
+}
+
+FieldsInfo FormatData::loadFields(QDomNode dn_node)
+{
+    QDomNode dn_nextNode = dn_node.firstChild();
+
+    FieldsInfo fieldsInfo;
+
+    while (!dn_nextNode.isNull())
+    {
+        FieldInfo fieldInfo;
+
+        QDomNamedNodeMap attributes = dn_nextNode.attributes();
+        for (uint index = 0; index < attributes.length(); index++) {
+            QDomAttr attr = attributes.item(index).toAttr();
+            if (attr.name() == "name")
+                fieldInfo.insert(attr.name(), attr.value());
+            if (attr.name() == "length")
+                fieldInfo.insert(attr.name(), attr.value());
+        }
+
+        fieldsInfo.append(fieldInfo);
+
+        dn_nextNode = dn_nextNode.nextSibling();
+    }
+
+    return fieldsInfo;
 }
 
 extern "C" MY_EXPORT Format load(QString projectFileName, QString* errorMessage)

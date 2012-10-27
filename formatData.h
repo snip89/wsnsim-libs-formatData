@@ -16,6 +16,8 @@ public:
     FormatData();
 
     Format load(QString formatFileName, QString* errorMessage);
+    ArgumentsInfo loadArguments(QDomNode dn_node);
+    FieldsInfo loadFields(QDomNode dn_node);
 };
 
 #ifdef Q_WS_WIN

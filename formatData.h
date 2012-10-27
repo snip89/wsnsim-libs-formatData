@@ -26,6 +26,6 @@ public:
 #define MY_EXPORT
 #endif
 
-extern "C" MY_EXPORT Format* load(QString projectFileName, QString* errorMessage);
+extern "C" MY_EXPORT Format* load(QString formatFileName, QString* errorMessage);
 
 #endif // FORMATDATA_H

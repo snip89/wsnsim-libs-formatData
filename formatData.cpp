@@ -113,8 +113,8 @@ FieldsInfo FormatData::loadFields(QDomNode dn_node)
     return fieldsInfo;
 }
 
-extern "C" MY_EXPORT Format* load(QString projectFileName, QString* errorMessage)
+extern "C" MY_EXPORT Format* load(QString formatFileName, QString* errorMessage)
 {
     FormatData formatData;
-    return formatData.load(projectFileName, errorMessage);
+    return formatData.load(formatFileName, errorMessage);
 }

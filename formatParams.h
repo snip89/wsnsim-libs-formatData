@@ -7,16 +7,15 @@
 
 typedef QMap<QString, QString> AttrInfo;
 typedef AttrInfo FieldInfo;
-typedef AttrInfo ArgumentInfo;
+typedef AttrInfo FormatInfo;
 typedef QList<FieldInfo> FieldsInfo;
-typedef QList<ArgumentInfo> ArgumentsInfo;
 
 class Format
 {
 public:
-    QString type;
-    ArgumentsInfo argumentsInfo;
+    FormatInfo formatInfo;
     FieldsInfo fieldsInfo;
+    AttrInfo argument;
 };
 
 #endif // FORMATPARAMS_H

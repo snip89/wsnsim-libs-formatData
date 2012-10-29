@@ -40,77 +40,31 @@ Format* FormatData::load(QString formatFileName, QString *errorMessage)
     QDomElement de_root = dd_doc.documentElement();
 
     QDomNamedNodeMap root_attributes = de_root.attributes();
-    QDomAttr root_attr = root_attributes.item(0).toAttr();
-    format->type = root_attr.value();
+
+    for (uint index = 0; index < root_attributes.length(); index++) {
+        QDomAttr attr = root_attributes.item(index).toAttr();
+        format->formatInfo[attr.name()] = attr.value();
+    }
 
     QDomNode dn_node = de_root.firstChild();
 
     while (!dn_node.isNull())
     {
-        if(dn_node.nodeName() == "arguments")
-            format->argumentsInfo = loadArguments(dn_node);
+        FieldInfo field;
 
-        if(dn_node.nodeName() == "fields")
-            format->fieldsInfo = loadFields(dn_node);
+        QDomNamedNodeMap node_attributes = dn_node.attributes();
+
+        for (uint index = 0; index < node_attributes.length(); index++) {
+            QDomAttr attr = node_attributes.item(index).toAttr();
+            field[attr.name()] = attr.value();
+        }
+
+        format->fieldsInfo.append(field);
 
         dn_node = dn_node.nextSibling();
     }
 
     return format;
-}
-
-ArgumentsInfo FormatData::loadArguments(QDomNode dn_node)
-{
-    QDomNode dn_nextNode = dn_node.firstChild();
-
-    ArgumentsInfo argumentsInfo;
-
-    while (!dn_nextNode.isNull())
-    {
-        ArgumentInfo argumentInfo;
-
-        QDomNamedNodeMap attributes = dn_nextNode.attributes();
-        for (uint index = 0; index < attributes.length(); index++) {
-            QDomAttr attr = attributes.item(index).toAttr();
-            if (attr.name() == "event")
-                argumentInfo.insert(attr.name(), attr.value());
-            if (attr.name() == "ID")
-                argumentInfo.insert(attr.name(), attr.value());
-        }
-
-        argumentsInfo.append(argumentInfo);
-
-        dn_nextNode = dn_nextNode.nextSibling();
-    }
-
-    return argumentsInfo;
-}
-
-FieldsInfo FormatData::loadFields(QDomNode dn_node)
-{
-    QDomNode dn_nextNode = dn_node.firstChild();
-
-    FieldsInfo fieldsInfo;
-
-    while (!dn_nextNode.isNull())
-    {
-        FieldInfo fieldInfo;
-
-        QDomNamedNodeMap attributes = dn_nextNode.attributes();
-        for (uint index = 0; index < attributes.length(); index++) {
-            QDomAttr attr = attributes.item(index).toAttr();
-            if (attr.name() == "name")
-                fieldInfo.insert(attr.name(), attr.value());
-            if (attr.name() == "length")
-                fieldInfo.insert(attr.name(), attr.value());
-        }
-
-        fieldsInfo.append(fieldInfo);
-
-        dn_nextNode = dn_nextNode.nextSibling();
-    }
-
-    return fieldsInfo;
 }
 
 extern "C" MY_EXPORT Format* load(QString formatFileName, QString* errorMessage)

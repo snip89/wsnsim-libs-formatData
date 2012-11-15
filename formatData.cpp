@@ -11,6 +11,8 @@ Format* FormatData::load(QString formatFileName, QString *errorMessage)
 {
     Format* format = new Format();
 
+    format->fileName = formatFileName;
+
     QFile file(formatFileName);
 
     QDomDocument dd_doc;
@@ -50,16 +52,16 @@ Format* FormatData::load(QString formatFileName, QString *errorMessage)
 
     while (!dn_node.isNull())
     {
-        FieldInfo field;
+        LuaInfo luaInfo;
 
         QDomNamedNodeMap node_attributes = dn_node.attributes();
 
         for (uint index = 0; index < node_attributes.length(); index++) {
             QDomAttr attr = node_attributes.item(index).toAttr();
-            field[attr.name()] = attr.value();
+            luaInfo[attr.name()] = attr.value();
         }
 
-        format->fieldsInfo.append(field);
+        format->luaInfo = luaInfo;
 
         dn_node = dn_node.nextSibling();
     }

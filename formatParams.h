@@ -4,17 +4,18 @@
 #include <QMap>
 #include <QString>
 #include <QList>
+#include <QFile>
 
 typedef QMap<QString, QString> AttrInfo;
-typedef AttrInfo FieldInfo;
 typedef AttrInfo FormatInfo;
-typedef QList<FieldInfo> FieldsInfo;
+typedef AttrInfo LuaInfo;
 
 class Format
 {
 public:
+    QString fileName;
     FormatInfo formatInfo;
-    FieldsInfo fieldsInfo;
+    LuaInfo luaInfo;
     AttrInfo argument;
 };
 

@@ -14,16 +14,7 @@ class FormatData : public QObject
     Q_OBJECT
 public:
     FormatData();
-
     Format* load(QString formatFileName, QString* errorMessage);
 };
-
-#ifdef Q_WS_WIN
-#define MY_EXPORT __declspec(dllexport)
-#else
-#define MY_EXPORT
-#endif
-
-extern "C" MY_EXPORT Format* load(QString formatFileName, QString* errorMessage);
 
 #endif // FORMATDATA_H

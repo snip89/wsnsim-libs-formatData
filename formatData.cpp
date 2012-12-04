@@ -68,9 +68,3 @@ Format* FormatData::load(QString formatFileName, QString *errorMessage)
 
     return format;
 }
-
-extern "C" MY_EXPORT Format* load(QString formatFileName, QString* errorMessage)
-{
-    FormatData formatData;
-    return formatData.load(formatFileName, errorMessage);
-}
